@@ -1,0 +1,31 @@
+library(tidyverse)
+library(readxl)
+
+jongro <- read_excel("./data/data_past_time.xls")
+str(jongro) #속성 확인
+
+jongro$PM2.5 <- as.numeric(jongro$PM2.5)
+str(jongro) #num으로 바뀐 것을 확인
+
+#날짜 변수 생성
+jongro %>%
+  mutate(date=str_sub(날짜, 1, 5))
+
+#날짜 별로 나누기
+jongro %>%
+  mutate(date=str_sub(날짜, 1, 5)) %>%
+  group_by(date)
+
+#PM2.5가 100이상인 것 추출
+jongro %>%
+  mutate(date=str_sub(날짜, 1, 5)) %>%
+  group_by(date) %>%
+  filter(PM2.5 >= 100)
+
+jongro %>%
+  mutate(date=str_sub(날짜, 1, 5)) %>%
+  group_by(date) %>%
+  filter(PM2.5 >= 100) %>%
+  summarise(
+    n=n()
+  )
